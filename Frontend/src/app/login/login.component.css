@@ -1,0 +1,16 @@
+.container{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-wrapper{
+    border: 1px solid black;
+}
+
+.login-wrapper .login-item{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
