@@ -5,15 +5,11 @@
           <input type="search" placeholder="Arancak değeri yazın...">
         </div>
         <ul>
-          @for(user of users; track user){
-          <li class="people-item" [ngClass]="selectedUserId == user.id ? 'active' : ''" (click)="changeUser(user)">
-            <img src="https://bootdey.com/img/Content/avatar/{{user.avatar}}" alt="">
+          <li  *ngFor="let user of users" class="people-item">
             <div>
               <div>{{user.name}}</div>
-              <div [ngClass]="user.status === 'online' ? 'online' : 'offline'">{{user.status}}</div>
             </div>
           </li>
-        }
         </ul>
       </div>
       <div class="chat">

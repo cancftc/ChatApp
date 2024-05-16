@@ -44,7 +44,6 @@
 
 .people-list li{
     list-style: none;
-    display: flex;
     gap: 20px;
     margin: 10px;
     border-bottom: 1px solid #dee0ea;
