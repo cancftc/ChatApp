@@ -36,7 +36,10 @@ export class HomeComponent implements OnInit{
   changeUser(user: UserModel) {
     this.selectedUser = user;
     this.crate();
+    if (this.chatId) {
     this.getByChat();
+      
+    }
 }
   
 
@@ -64,8 +67,9 @@ export class HomeComponent implements OnInit{
     this._chat.add(this.chatId, this.message, res=> {
       console.log(res.message);
       this.message = "";
+      this.getByChat();
     })
-    this.getByChat();
+
   }
 
   getByChat() {

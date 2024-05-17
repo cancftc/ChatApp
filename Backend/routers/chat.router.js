@@ -33,7 +33,12 @@ router.post("/create", async(req, res)=> {
         const { userId, toUserId, message } = req.body;
 
         // Mevcut sohbeti kontrol et
-        const existingChat = await Chat.findOne({ userId, toUserId });
+        const existingChat = await Chat.findOne({ 
+            $or: [
+                { userId: userId, toUserId: toUserId }, 
+                { userId: toUserId, toUserId: userId }
+            ]
+        });
 
         // Eğer mevcut sohbet varsa, yeni sohbet oluşturmadan önce bunu kullan
         if (existingChat) {
