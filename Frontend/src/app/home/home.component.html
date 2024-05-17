@@ -5,8 +5,8 @@
           <input type="search" placeholder="Arancak değeri yazın...">
         </div>
         <ul>
-          <li  *ngFor="let user of users" class="people-item">
-            <div>
+          <li  *ngFor="let user of users" class="people-item" (click)="changeUser(user) " >
+            <div >
               <div>{{user.name}}</div>
             </div>
           </li>
@@ -14,29 +14,18 @@
       </div>
       <div class="chat">
         <div class="chat-header">
-          <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
           <div>
-            <div>Can Çiftçi</div>
-            <div>online</div>
+            <div class="user-name">{{selectedUser.name}}</div>
           </div>
         </div>
         <div class="chat-content">
-          <div class="chat-content-message">
-            Selam Naver
-            Selam NaverSelam Naver
-          </div>
-          <div class="chat-content-message">
-            Selam Naver
-          </div>
-          <div class="chat-content-message">
-            Selam Naver
-          </div>        <div class="chat-content-message">
-            Selam Naver
-          </div>
+          <div *ngFor="let msg of chat.messages" class="chat-content-message">
+            {{msg.message}}
+        </div>
         </div>
         <div class="chat-message">
-          <input type="text" placeholder="Buraya bir mesaj yazın...">
-          <span><i class="fa fa-send"></i></span>
+          <input type="text" [(ngModel)]="message" placeholder="Buraya bir mesaj yazın...">
+          <span><i (click)="add()" class="fa fa-send"></i></span>
         </div>
       </div>
     </div>

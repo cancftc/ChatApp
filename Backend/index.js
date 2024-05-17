@@ -7,8 +7,10 @@ app.use(express.json());
 app.use(cors());
 
 const authRouter = require("./routers/auth.router");
+const chatRouter = require("./routers/chat.router");
 
 app.use("/api/auth", authRouter);
+app.use("/api/chat", chatRouter);
 
 
 connection();

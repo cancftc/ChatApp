@@ -68,6 +68,11 @@
     gap: 20px;
     position: fixed;
     width: 863px;
+    height: 100px;
+}
+
+.chat-header .user-name{
+    font-size: 40px;
 }
 
 .chat-header img{
