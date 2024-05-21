@@ -18,10 +18,10 @@
             <div class="user-name">{{selectedUser.name}}</div>
           </div>
         </div>
-        <div class="chat-content">
+        <div class="chat-content" id="chatContent" #chatContent>
           <div *ngFor="let msg of chat.messages" class="chat-content-message">
             {{msg.message}}
-        </div>
+          </div>
         </div>
         <div class="chat-message">
           <input type="text" [(ngModel)]="message" placeholder="Buraya bir mesaj yazın...">
