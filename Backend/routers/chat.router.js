@@ -6,7 +6,7 @@ const { io } = require("../index"); // Socket.IO bağlantısını alın
 
 router.post("/add", async (req, res) => {
     try {
-        const { chatId, message } = req.body;
+        const { chatId, message, messageUserId } = req.body;
 
         let chat = await Chat.findById(chatId);
         if (!chat) {
@@ -16,6 +16,7 @@ router.post("/add", async (req, res) => {
         // Yeni mesaj oluştur
         const newMessage = {
             message: message,
+            messageUserId: messageUserId
         };
 
         // Chat'a yeni mesajı ekle
@@ -33,7 +34,7 @@ router.post("/add", async (req, res) => {
 
 router.post("/create", async (req, res) => {
     try {
-        const { userId, toUserId, message } = req.body;
+        const { userId, toUserId,} = req.body;
 
         // Mevcut sohbeti kontrol et
         const existingChat = await Chat.findOne({

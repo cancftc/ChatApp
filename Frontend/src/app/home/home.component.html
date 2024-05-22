@@ -1,8 +1,8 @@
 <div class="container">
     <div class="chatApp-wrapper">
       <div class="people-list">
-        <div class="people-search"> 
-          <input type="search" placeholder="Arancak değeri yazın...">
+        <div class="people-title"> 
+          <div>Kullanıcılar</div>
         </div>
         <ul>
           <li  *ngFor="let user of users" class="people-item" (click)="changeUser(user) " >
@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="chat-content" id="chatContent" #chatContent>
-          <div *ngFor="let msg of chat.messages" class="chat-content-message">
+          <div *ngFor="let msg of chat.messages" class="chat-content-message" [ngStyle]="getMessageStyle(msg.message, msg.messageUserId)">
             {{msg.message}}
           </div>
         </div>

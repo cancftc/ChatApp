@@ -7,6 +7,7 @@ const ChatSchema = new mongoose.Schema({
     messages: [
         {
             message: String,
+            messageUserId: String
         }
     ],
     createdDate: Date

@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from './services/chat.service';
 import { ChatModel } from './models/chat.model';
-import { ChatModel2 } from './models/chatModel2';
+import { ChatMessageModel } from './models/chatModel2';
 import { io, Socket } from 'socket.io-client';
 import { CommonModule } from '@angular/common';
 
@@ -21,8 +21,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   selectedUser: UserModel = new UserModel();
   message: string = "";
   chatId: string = "";
-  chat: ChatModel2 = new ChatModel2();
+  chat:  ChatMessageModel= new ChatMessageModel();
   socket!: Socket;
+  messageUserId: string = "";
 
   @ViewChild('chatContent') private chatContent!: ElementRef;
 
@@ -47,7 +48,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   getAll() {
-    this._http.get<UserModel[]>("auth/getAll", res => this.users = res);
+    this._http.get<UserModel[]>("auth/getAll", res => {
+      const localUserString = localStorage.getItem("user");
+      const localUser = localUserString ? JSON.parse(localUserString) : null;
+      
+      // Localdeki kullanıcı adını al
+      const localUsername = localUser ? localUser.name : null;
+  
+      // Gelen kullanıcıları filtrele
+      this.users = res.filter(user => user.name !== localUsername);
+    });
   }
 
   async changeUser(user: UserModel) {
@@ -62,11 +72,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return new Promise((resolve, reject) => {
       let userString = localStorage.getItem("user");
       let user = userString ? JSON.parse(userString) : null;
+      this.messageUserId = user._id;
 
       let chat = new ChatModel();
       chat.userId = user._id;
       chat.toUserId = this.selectedUser._id;
-      chat.message = this.message;
 
       this._chat.create(chat, res => {
         console.log(res.message);
@@ -78,11 +88,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   add() {
-    this._chat.add(this.chatId, this.message, res => {
+    let userString = localStorage.getItem("user");
+    let user = userString ? JSON.parse(userString) : null;
+    this.messageUserId = user._id;
+
+    this._chat.add(this.chatId, this.message, this.messageUserId, res => {
       console.log(res.message);
     });
 
-    this.socket.emit('newMessage', { message: this.message });
+    this.socket.emit('newMessage', { message: this.message, messageUserId: this.messageUserId });
     this.message = "";
   }
 
@@ -93,16 +107,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
       console.log(res);
     });
   }
-
-  private scrollToBottom(): void {
-    try {
+  
+  scrollToBottom(): void {
       this.chatContent.nativeElement.scrollTop = this.chatContent.nativeElement.scrollHeight;
-    } catch(err) {
-      console.log('Scroll to bottom failed:', err);
-    }
   }
-
-  private observeMutations(): void {
+  
+  observeMutations(): void {
     const config = { childList: true };
     const targetNode = this.chatContent.nativeElement;
 
@@ -116,5 +126,40 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     const observer = new MutationObserver(callback);
     observer.observe(targetNode, config);
+  }
+
+  getMessageStyle(message: string, messageUserId: string): any {
+    let backgroundColor: string;
+    let width: string;
+    let float: string;
+    let clear: string = 'none';
+
+    if (messageUserId === this.messageUserId) {
+      backgroundColor = '#7388f0';
+      float = 'right'; 
+      // LocalStorage'daki kullanıcı için beyaz
+    } else {
+      backgroundColor = '#6d728b'; // Diğer kullanıcılar için
+      float = 'left';
+    }
+
+    if (message.length < 20) {
+      width = '35%';
+      clear = 'both'; 
+    } else if (message.length < 50) {
+      width = '40%';
+    } else if (message.length < 60) {
+      width = '60%';
+    } else {
+      width = '80%';
+    }
+
+    return {
+      'background-color': backgroundColor,
+      'width': width,
+      'float': float,
+      'clear': clear,
+      'height': 'auto', // Yükseklik içeriğe göre otomatik ayarlanacak
+    };
   }
 }
