@@ -3,17 +3,20 @@ const router = express.Router();
 const {v4:uuidv4} = require("uuid");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+const upload = require("../services/file.services");
+const { io } = require("../index");
 
 const secretKey = "My Secret Key My Secret Key 1234.";
 const options = {
     expiresIn: "1d"
 };
 
-router.post("/register", async(req, res)=> {
+router.post("/register",upload.array("images"), async(req, res)=> {
     try {
         const user = new User(req.body);
         user._id = uuidv4();
         user.createdDate = new Date();
+        user.imageUrls = req.files;
         
         const checkUserEmail = await User.findOne({email: user.email});
 
@@ -28,6 +31,21 @@ router.post("/register", async(req, res)=> {
         }
     } catch (error) {
         res.status(500).json({message: error.message});
+    }
+});
+
+router.post('/updateOnlineStatus', async (req, res) => {
+    try {
+        const { userId, online } = req.body;
+
+        let user = await User.findById(userId);
+
+        user.online = online;
+
+        await user.save();
+        io.emit("userStatusChange", { userId: user._id, online: user.online});
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 });
 

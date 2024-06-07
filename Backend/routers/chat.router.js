@@ -15,6 +15,7 @@ router.post("/add", async (req, res) => {
 
         // Yeni mesaj oluştur
         const newMessage = {
+            messageId: uuidv4(),
             message: message,
             messageUserId: messageUserId
         };
@@ -56,9 +57,7 @@ router.post("/create", async (req, res) => {
             _id: chatId,
             userId: userId,
             toUserId: toUserId,
-            messages: [{
-                message: message,
-            }],
+            messages: [],
             createdDate: new Date()
         });
 
@@ -76,6 +75,29 @@ router.post("/getByChat", async (req, res) => {
         const { _id } = req.body;
         let chat = await Chat.findById(_id);
         res.json(chat);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+router.post("/deleteMessage", async (req, res) => {
+    try {
+        const { chatId, messageId } = req.body;
+
+        const chat = await Chat.findById(chatId);
+        if (!chat) {
+            return res.status(404).json({ message: "Belirtilen chat ID'si ile bir sohbet bulunamadı" });
+        }
+
+        const messageIndex = chat.messages.findIndex(msg => msg.messageId === messageId);
+        if (messageIndex === -1) {
+            return res.status(404).json({ message: "Belirtilen message ID'si ile bir mesaj bulunamadı" });
+        }
+
+        chat.messages.splice(messageIndex, 1);
+        await chat.save();
+
+        res.json({ message: "Mesaj başarıyla silindi" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

@@ -5,6 +5,7 @@ import { AuthService } from './services/auth.services';
 import { LoginModel } from './models/login.model';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ChatModel } from '../home/models/chat.model';
 
 @Component({
   selector: 'app-login',
@@ -20,17 +21,22 @@ export class LoginComponent {
   ){
   }
 
-  login(form:NgForm){
+  login(form: NgForm) {
     if (form.valid) {
       let model = new LoginModel();
       model.email = form.controls["email"].value;
       model.password = form.controls["password"].value;
 
-      this._auth.login(model, res=>{
-        localStorage.setItem("token",res.token);
+      this._auth.login(model, res => {
+        localStorage.setItem("token", res.token);
         localStorage.setItem("user", JSON.stringify(res.user));
+
+        this._auth.updateOnlineStatus(res.user._id, true, updateRes => {
+          console.log('Online status updated');
+        });
+
         this._router.navigateByUrl("/");
-      })
+      });
     }
   }
 }

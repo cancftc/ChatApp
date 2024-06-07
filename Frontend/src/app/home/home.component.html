@@ -1,30 +1,51 @@
 <div class="container">
     <div class="chatApp-wrapper">
       <div class="people-list">
-        <div class="people-title"> 
-          <div>Kullanıcılar</div>
+        <div class="people-header">
+          <div class="people-title"> 
+            <div>Kullanıcılar</div>
+          </div>
+          <button class="btn btn-light"  (click)="exit()">Çıkış</button>
         </div>
         <ul>
-          <li  *ngFor="let user of users" class="people-item" (click)="changeUser(user) " >
-            <div >
-              <div>{{user.name}}</div>
+          <li  *ngFor="let user of users" class="people-item" (click)="changeUser(user) " [ngClass]="user._id == selectedUser._id ? 'active' : ''">
+            <div class="user-list">
+              <div>
+                @if(user.imageUrls && user.imageUrls.length > 0){
+                  <img [src]="'http://localhost:4000/' + user.imageUrls[0].path" />
+                }@else{
+                  <img src="../../assets/avatar2.jpg" />
+                }
+              </div>
+              <div class="user-name-list">{{user.name}}</div>
             </div>
           </li>
         </ul>
       </div>
       <div class="chat">
         <div class="chat-header">
-          <div>
-            <div class="user-name">{{selectedUser.name}}</div>
+          <div class="chat-header-wrapper">
+            <div class="user-img" *ngIf="selectedUser.name">
+              @if(selectedUser.imageUrls && selectedUser.imageUrls.length > 0){
+                <img [src]="'http://localhost:4000/' + selectedUser.imageUrls[0].path" />
+              }@else{
+                <img src="../../assets/avatar2.jpg" />
+              }
+            </div>
+            <div *ngIf="selectedUser.name">
+              <div class="user-name">{{selectedUser.name}}</div>
+              <div style="color: white;" *ngIf="selectedUser.online">çevrimiçi</div>
+              <div style="color: white;" *ngIf="!selectedUser.online">çevrimdışı</div>
+            </div>
           </div>
         </div>
         <div class="chat-content" id="chatContent" #chatContent>
           <div *ngFor="let msg of chat.messages" class="chat-content-message" [ngStyle]="getMessageStyle(msg.message, msg.messageUserId)">
-            {{msg.message}}
+            {{msg.message}} <i style="color: white;" class="bi bi-three-dots-vertical vertical" (click)="vertical(msg.messageId)"></i>
           </div>
         </div>
         <div class="chat-message">
-          <input type="text" [(ngModel)]="message" placeholder="Buraya bir mesaj yazın...">
+          <input type="text" [(ngModel)]="message" placeholder="Buraya bir mesaj yazın..." (keyup.enter)="add()">
           <span><i (click)="add()" class="fa fa-send"></i></span>
         </div>
       </div>

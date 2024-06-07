@@ -4,4 +4,6 @@ export class UserModel{
     email: string = "";
     password: string = "";
     createdDate: string = "";
+    online: boolean = false;
+    imageUrls: any[] = [];
 }

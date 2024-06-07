@@ -32,4 +32,10 @@ export class ChatService {
         callBack(res);
     })
   }
+  
+  removeMessage(model: any, callBack:(res: MessageResponseModel)=> void){
+    this._http.post<MessageResponseModel>("chat/deleteMessage",model, res=> {
+      callBack(res);
+    })
+  }
 }

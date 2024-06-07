@@ -3,4 +3,5 @@ export class ChatModel{
     userId: string = "";
     toUserId: string = "";
     createdDate: string  ="";
+    online: boolean = false;
   }

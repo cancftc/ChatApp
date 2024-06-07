@@ -28,6 +28,16 @@
     color: white;
 }
 
+.people-header{
+    display: flex;
+    align-items: center;
+    gap: 170px;
+}
+
+.people-header button{
+    height: 40px;
+}
+
 .people-list ul{
     margin: 0px;
     padding: 0px;
@@ -37,7 +47,7 @@
     list-style: none;
     gap: 20px;
     background-color: rgba(81, 85, 104, 0.8);
-    padding: 15px;
+    padding: 10px;
     cursor: pointer;
     color: white;
     margin: 10px;
@@ -49,10 +59,19 @@
     background-color: #6c80e8;
 }
 
+
 .people-item img{
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50px;
+}
+.user-name-list{
+    font-size: 20px;
+}
+.user-list{
+    display: flex;
+    gap: 10px;
+    align-items: center;
 }
 
 .chat .chat-header{
@@ -66,12 +85,28 @@
     height: 71px;
 }
 
+.chat-header-wrapper{
+    display: flex;
+    gap: 10px;
+}
+
 .chat-header .user-name{
-    font-size: 40px;
+    font-size: 20px;
     margin-top: -5px;
     color: white;
 }
 
+.online {
+    color: green;
+  }
+  
+  .offline {
+    color: red;
+  }
+
+.active{
+    background-color: #6c80e8!important;
+}
 .chat-header img{
     width: 50px;
     height: 50px;
@@ -105,7 +140,7 @@
 }
 
 .chat-content-message{
-    word-break: break-all; /* Uzun kelimelerin satır sonuna gelince kırılmasını sağlar */
+    word-break: break-all;
     white-space: pre-wrap;
     height: 30px;
     background-color: #7388f0;
@@ -113,7 +148,7 @@
     border-radius: 10px;
     font-size: 16px;
     padding: 15px;
-    margin: 20px;
+    margin: 7px;
     display: flex;
     align-items: center;
 }
@@ -163,11 +198,15 @@
 
     .chat .chat-message{
         width: 743px;
-        padding: 16px;
+        padding: 20px;
     }
 
     .chat .chat-message input{
         width: 93%;
+    }
+
+    .people-header button{
+        margin-left: -60px;
     }
 }
 
@@ -187,6 +226,10 @@
     .chat .chat-message input{
         width: 93%;
     }
+
+    .people-header button{
+        margin-left: -120px;
+    }
 }
 
 @media (max-width: 988px){
@@ -204,6 +247,11 @@
 
     .chat .chat-message input{
         width: 90%;
+    }
+
+    .people-header button{
+        margin-left: -180px;
+        padding: 5px;
     }
 }
 
@@ -223,6 +271,17 @@
     .chat .chat-message input{
         width: 83%;
     }
+
+    .people-header{
+        flex-direction: column;
+
+    }
+    .people-header button{
+        margin-top: -170px;
+        margin-left: 0px;
+        width: 90%;
+
+    }
 }
 
 @media (max-width: 506px){
@@ -231,7 +290,7 @@
     }
     
  .people-title{
-        font-size: 20px;
+        font-size: 24px;
     }
     .chat .chat-content{
         width: 316px;

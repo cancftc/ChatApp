@@ -6,6 +6,7 @@ const ChatSchema = new mongoose.Schema({
     toUserId: String,
     messages: [
         {
+            messageId: String,
             message: String,
             messageUserId: String
         }
